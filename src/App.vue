@@ -62,7 +62,7 @@ export default {
       audienciaSeleccionada: null,
       url: "https://gobiernoabierto.cordoba.gob.ar/api/actividad-publica/",
       urlBase: "https://gobiernoabierto.cordoba.gob.ar/api/actividad-publica/",
-      columns: ['titulo', 'descripcion', 'inicia', 'termina', 'nombrelugar', 'lugardir' ],
+      columns: ['titulo', 'descripcion_txt', 'inicia', 'termina', 'nombrelugar', 'lugardir' ],
       options: {
       dateColumn: ['inicia','termina'],
       byColumn: false,
@@ -72,7 +72,7 @@ export default {
       sortable: ['inicia','termina'],
         headings: {
           titulo: 'Titulo',
-          descripcion: 'Descripción',
+          descripcion_txt: 'Descripción',
           inicia: 'Desde',
           termina: 'Hasta',
           nombrelugar: 'Lugar',
@@ -121,7 +121,6 @@ export default {
           dato.inicia = moment(dato.inicia).format('DD MMM YYYY, HH:mm:ss');
           dato.termina = moment(dato.termina).format('DD MMM YYYY, HH:mm:ss');
           dato.nombrelugar = dato.lugar ? dato.lugar.nombre : '';
-          dato.descripcion = dato.descripcion;
           dato.lugardir = dato.lugar ? dato.lugar.direccion : '';
           return dato;
          });
