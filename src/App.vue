@@ -1,14 +1,5 @@
 <template>
-  <div id="app">
-    <div class="row">
-      <div class="col-md-4 col-md-offset-4">
-        <label>Filtro por Audiencias</label> 
-        <select class="form-control" v-model="audienciaSeleccionada">
-          <option selected value="0">Todas</option>
-          <option  v-for="audiencia in audiencias" :key="audiencia.id" :value="audiencia.id">{{audiencia.nombre}}</option>
-        </select>
-      </div>
-    </div>
+  <div id="app" class="container">
       <div class="row">
         <div class="col-md-12">
         <input type="button" class="btn btn-primary" value="Imprimir" @click="imprimir">
@@ -26,26 +17,6 @@ import axios from 'axios';
 import moment from 'moment';
 export default {
   name: 'app',
-  watch: {
-    audienciaSeleccionada: function(valor){
-      if(valor == 0){
-        this.url = this.urlBase;
-      }
-      else {
-        this.url = this.urlBase + '?audiencia_id=' + valor;
-    }
-      this.$nextTick(function() {
-        this.$refs.tabla.refresh();
-      });
-    }
-  },
-  mounted: function(){
-    var v = this;
-    axios.get("https://gobiernoabierto.cordoba.gob.ar/api/audiencia-actividad/")
-      .then(function(response){
-        v.audiencias = response.data.results
-      })
-  },
   methods: {
     onSorted: function(orden){
       const columna = orden.ascending ? orden.column : '-' + orden.column;
@@ -56,12 +27,18 @@ export default {
       print();
     }
   },
+  beforeMount() {
+    const hoy = new Date();
+    const dia = hoy.getDate();
+    const mes = hoy.getMonth()+1;
+    const anio = hoy.getFullYear();
+    this.url = `https://gobiernoabierto.cordoba.gob.ar/api/actividad-publica/?disciplina_id=109&termina_GTE=${dia}-${mes}-${anio}-23-59-59&inicia_LTE=${dia}-${mes}-${anio}-00-00-00`;
+    this.urlBase = this.url;
+  },
   data: function() {
     return {
-      audiencias: [],
-      audienciaSeleccionada: null,
-      url: "https://gobiernoabierto.cordoba.gob.ar/api/actividad-publica/",
-      urlBase: "https://gobiernoabierto.cordoba.gob.ar/api/actividad-publica/",
+      url: "https://gobiernoabierto.cordoba.gob.ar/api/actividad-publica/?disciplina_id=109&termina_GTE=01-01-2018-23-59-59&inicia_LTE=01-01-2018-00-00-00",
+      urlBase: "https://gobiernoabierto.cordoba.gob.ar/api/actividad-publica/?disciplina_id=109&termina_GTE=01-01-2018-23-59-59&inicia_LTE=01-01-2018-00-00-00",
       columns: ['titulo', 'descripcion_txt', 'inicia', 'termina', 'nombrelugar', 'lugardir' ],
       options: {
       dateColumn: ['inicia','termina'],
@@ -107,16 +84,7 @@ export default {
           .bind(this));
         },
         responseAdapter: function (response) {
-          //function decodeHTMLEntities (str) {
-          //  if(str && typeof str === 'string') {
-          //    // strip script/html tags
-          //    str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
-          //    str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
-          //  }
-          //  return str;
-          //}
-
-          var data = response.data.results.map(function(dato){
+          const data = response.data.results.map(function(dato){
           moment.locale('es');
           dato.inicia = moment(dato.inicia).format('DD MMM YYYY, HH:mm:ss');
           dato.termina = moment(dato.termina).format('DD MMM YYYY, HH:mm:ss');
@@ -134,7 +102,8 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

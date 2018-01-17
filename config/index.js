@@ -48,7 +48,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/wp-content/uploads/proyectos/tabla-actividades-sami/',
+    assetsPublicPath: '/wp-content/uploads/proyectos/tabla-servicios-sami/',
 
     /**
      * Source Maps
