@@ -32,7 +32,7 @@ export default {
     const dia = hoy.getDate();
     const mes = hoy.getMonth()+1;
     const anio = hoy.getFullYear();
-    this.url = `https://gobiernoabierto.cordoba.gob.ar/api/actividad-publica/?disciplina_id=109&termina_GTE=${dia}-${mes}-${anio}-23-59-59&inicia_LTE=${dia}-${mes}-${anio}-00-00-00`;
+    this.url = `https://gobiernoabierto.cordoba.gob.ar/api/actividad-publica/?disciplina_id=109&termina_GTE=${dia}-${mes}-${anio}-00-00-00&inicia_LTE=${dia}-${mes}-${anio}-00-00-00`;
     this.urlBase = this.url;
   },
   data: function() {
